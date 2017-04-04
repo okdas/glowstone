@@ -7,7 +7,7 @@ module Glowstone
 
 		attr_reader :host, :port
 		attr_accessor :name, :timeout
-		attr_reader :motd, :gamemode, :version, :plugins, :map_name, :num_players, :max_players, :players
+		attr_reader :motd, :gamemode, :version, :plugins, :map_name, :num_players, :max_players, :players, :brand
 
 		def initialize(host="localhost", options={})
 			
@@ -48,7 +48,14 @@ module Glowstone
 			@gamemode = status.gametype.to_s
 			@version = status.version.to_s
 
-			@plugins = (status.plugins.empty?) ? nil : status.plugins.to_s.gsub!(/^(craft)?bukkit[^:]*:\s*/i, "").split(/;\s*/)
+                        unless status.plugins.empty?
+                          match = status.plugins.to_s.split(':')
+
+                          @brand = match[0]
+                          @plugins = match[1].split(/;\s*/)
+                        end
+			
+# 			@plugins = (status.plugins.empty?) ? nil : status.plugins.to_s.gsub!(/^(craft)?bukkit[^:]*:\s*/i, "").split(/;\s*/)
 			@map_name = status.map_name.to_s
 			@num_players = status.num_players.to_i
 			@max_players = status.max_players.to_i

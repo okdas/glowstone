@@ -51,8 +51,8 @@ module Glowstone
                         unless status.plugins.empty?
                           match = status.plugins.to_s.split(':')
 
-                          @brand = match[0]
-                          @plugins = match[1].split(/;\s*/)
+                          @brand = match[0] unless match[0].nil?
+                          @plugins = match[1].split(/;\s*/) unless match[1].nil?
                         end
 			
 # 			@plugins = (status.plugins.empty?) ? nil : status.plugins.to_s.gsub!(/^(craft)?bukkit[^:]*:\s*/i, "").split(/;\s*/)
